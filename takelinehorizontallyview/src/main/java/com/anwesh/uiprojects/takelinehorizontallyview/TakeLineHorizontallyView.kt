@@ -214,4 +214,13 @@ class TakeLineHorizontallyView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : TakeLineHorizontallyView {
+            val view : TakeLineHorizontallyView = TakeLineHorizontallyView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
