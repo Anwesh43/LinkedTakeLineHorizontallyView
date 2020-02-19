@@ -189,4 +189,27 @@ class TakeLineHorizontallyView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : TakeLineHorizontallyView) {
+
+        private val animator : Animator = Animator(view)
+        private val tlh : TakeLineHorizontally = TakeLineHorizontally(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            tlh.draw(canvas, paint)
+            animator.animate {
+                tlh.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            tlh.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
