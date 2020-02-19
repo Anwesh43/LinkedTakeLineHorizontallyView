@@ -25,3 +25,38 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawTakeLineHorizontally(i : Int, scale : Float, w : Float, paint : Paint) {
+    val sf : Float = scale.sinify().divideScale(i, lines)
+    var sc : Float = 0f
+    if (scale > 0.5f) {
+        sc = sf
+    }
+    val size : Float = w / sizeFactor
+    val x : Float = (w / 2) * (1f - 2 * i) * sc
+    save()
+    drawLine(0f, 0f, (w / 2) * sf * (1f - 2 * i), 0f, paint)
+    translate(x, 0f)
+    drawLine(0f, -size, 0f, size, paint)
+    restore()
+}
+
+fun Canvas.drawTakeLinesHorizontally(scale : Float, w : Float, paint : Paint) {
+    for (j in 0..(lines - 1)) {
+        drawTakeLineHorizontally(j, scale,  w, paint)
+    }
+}
+
+fun Canvas.drawTLHNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(0f, gap * (i + 1))
+    drawTakeLinesHorizontally(scale, w, paint)
+    restore()
+}
