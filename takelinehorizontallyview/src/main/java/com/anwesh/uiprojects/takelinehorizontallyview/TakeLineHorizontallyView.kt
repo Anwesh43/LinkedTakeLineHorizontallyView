@@ -165,4 +165,28 @@ class TakeLineHorizontallyView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class TakeLineHorizontally(var i : Int) {
+
+        private val root : TLHNode = TLHNode(0)
+        private var curr : TLHNode = root
+        private var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            root.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            curr.update {
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
