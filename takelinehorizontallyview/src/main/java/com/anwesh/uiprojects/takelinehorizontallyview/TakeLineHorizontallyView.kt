@@ -28,16 +28,18 @@ fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
 fun Canvas.drawTakeLineHorizontally(i : Int, scale : Float, w : Float, paint : Paint) {
     val sf : Float = scale.sinify().divideScale(i, lines)
-    var sc : Float = 0f
+    var sc : Float = 1f
+    val si : Float = 1f - 2 * i
+    val sw : Float = (w / 2) * si
     if (scale > 0.5f) {
         sc = sf
     }
     val size : Float = w / sizeFactor
-    val x : Float = (w / 2) * (1f - 2 * i) * sc
+    val x : Float = sw * sc
     save()
-    drawLine(0f, 0f, (w / 2) * sf * (1f - 2 * i), 0f, paint)
-    translate(x, 0f)
-    drawLine(0f, -size, 0f, size, paint)
+    drawLine(w * i, 0f, w * i + sw * sf, 0f, paint)
+    translate(w * i + x, 0f)
+    drawLine(0f, -size / 2 * si, 0f, 0f, paint)
     restore()
 }
 
